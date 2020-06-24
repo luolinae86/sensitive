@@ -65,6 +65,25 @@ Sensitive.empty!
 Sensitive.filter('不要赌博') #=> '赌博'
 ```
 
+```ruby
+irb(main):018:0> puts Sensitive.words
+{}
+irb(main):019:0> Sensitive.add_word('敏感词')
+=> ["敏", "感", "词"]
+irb(main):020:0> puts Sensitive.words
+{"敏"=>{:is_end=>false, :value=>{"感"=>{:is_end=>false, :value=>{"词"=>{:is_end=>true, :value=>{}}}}}}}
+irb(main):021:0> puts Sensitive.filter('检测敏感词的算法')
+敏感词
+irb(main):022:0> puts Sensitive.filter('色情信息')
+irb(main):023:0> Sensitive.load_default
+irb(main):024:0> puts Sensitive.filter('色情信息')
+色情信息
+irb(main):025:0> Sensitive.empty
+=> {}
+irb(main):026:0> puts Sensitive.words
+{}
+```
+
 ## DFA 算法
 `Gem` 中，用 `ruby`实现了 `DFA` 算法
 > DFA（Deterministic Finite Automaton,即确定有穷自动机。其原理为：有一个有限状态集合和一些从一个状态通向另一个状态的边，每条边上标记有一个符号，其中一个状态是初态，某些状态是终态。但不同于不确定的有限自动机，DFA中不会有从同一状态出发的两条边标志有相同的符号。
