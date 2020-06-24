@@ -12,8 +12,6 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
-  spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
-
   spec.metadata["homepage_uri"] = "https://github.com/luolinae86/sensitive" 
   spec.metadata["source_code_uri"] = "https://github.com/luolinae86/sensitive"
   spec.metadata["changelog_uri"] = "https://github.com/luolinae86/sensitive"
