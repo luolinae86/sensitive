@@ -34,7 +34,7 @@ module Sensitive
     end
     
     # 从用户文件中导入敏感词
-    def (file_path)
+    def load_file(file_path)
       File.open(file_path, 'r').each_line do |line|
         add_word(line)
       end
