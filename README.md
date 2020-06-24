@@ -35,7 +35,6 @@ gem 'sensitive'
 你可以根据自己选择是否加载，加载方法：
 
 ```ruby
-# 加载系统自带敏感词
 Sensitive.load_default
 ```
 
@@ -44,15 +43,19 @@ Sensitive.load_default
 你也可以加载自己的一个或多个敏感词文件，文件格式支持 `txt`， 不同的敏感词条独立一行
 
 ```ruby
-# file_path 是敏感词文件的绝对路径
 Sensitive.load_file(file_path)
 ```
 
 #### 动态添加单个敏感词
 
 ```ruby
-# 动态添加敏感词，比如 赌博
 Sensitive.add_word('赌博')
+```
+
+#### 清空敏感词
+
+```ruby
+Sensitive.empty!
 ```
 
 #### 敏感词过滤
