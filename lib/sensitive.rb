@@ -52,11 +52,13 @@ module Sensitive
       sensitive_word = ''
       temp = words.clone
       word = word.strip.gsub(%r{[^\p{Han}+/ua-zA-Z0-9]}, '')
-      word.chars.each do |char|
+      word.chars.each_with_index do |char, index|
         if temp.key? char
           matched_one = true
           sensitive_word += char
           break if temp[char][:is_end]
+          # 如果被检测的词已是最后一个，但关键字还不是最后，则返为空
+          return '' if index == word.size - 1
           temp = temp[char][:value]
         else
           sensitive_word = ''
