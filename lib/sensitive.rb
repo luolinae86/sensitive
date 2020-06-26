@@ -13,18 +13,12 @@ module Sensitive
 
     # 添加单个敏感词
     def add_word(word)
-      temp = words
-      # 去掉敏感词中的特殊符号，只保留汉字，英文和 数字
       word = word.strip.gsub(%r{[^\p{Han}+/ua-zA-Z0-9]}, '')
-      word.chars.each_with_index do |char, index|
-        if temp.key?(char)
-          temp = temp[char][:value]
-        elsif index == word.chars.size - 1
-          temp[char] = { is_end: true, value: {} }
-        else
-          temp[char] = { is_end: false, value: {} }
-          temp = temp[char][:value]
+      word.chars.inject(self.words) do |words, char|
+        if !words.key? char
+          words[char] = {}
         end
+        words[char]
       end
     end
 
@@ -47,31 +41,27 @@ module Sensitive
 
     # 过滤敏感词
     def filter(word)
-      # matched_one 判断某个字是否被关键字命中过
-      matched_one = false
       sensitive_word = ''
-      temp = words.clone
       word = word.strip.gsub(%r{[^\p{Han}+/ua-zA-Z0-9]}, '')
-      word.chars.each_with_index do |char, index|
-        if temp.key? char
-          matched_one = true
+      word.chars.each_with_index.inject(self.words) do |words, (char, index)|
+        if words.key?(char)
           sensitive_word += char
-          break if temp[char][:is_end]
+          break if words[char].empty?
           # 如果被检测的词已是最后一个，但关键字还不是最后，则返为空
           return '' if index == word.size - 1
-          temp = temp[char][:value]
+          words[char]
         else
-          sensitive_word = ''
           # 如果上一步在关键字中，这次又不在关键字中，需要重新初始化检测
-          if matched_one
-            matched_one = false
-            temp = words.clone
-            redo
+          if !sensitive_word.empty?
+            sensitive_word = ''
+            words = self.words and redo
+          else
+            words
           end
         end
       end
       sensitive_word
     end
   end
-
 end
+
